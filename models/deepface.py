@@ -6,8 +6,8 @@ FACE_DETECTOR_BACKEND = "ssd"
 FACE_DETECTOR_MODEL = FaceDetector.build_model(FACE_DETECTOR_BACKEND)
 FACE_DETECTOR_PARAMS = {
     'face_detector': FACE_DETECTOR_MODEL,
-    'detector_baclend': FACE_DETECTOR_BACKEND,
-    'align': True
+    'detector_backend': FACE_DETECTOR_BACKEND,
+    'align': False
 }
 
 # Facial Feature Analysiss
@@ -19,7 +19,19 @@ FACIAL_FEATURE_ANALYSIS_MODELS = {
 FACIAL_FEATURE_ANALYSIS_PARAMS = {
     'models': FACIAL_FEATURE_ANALYSIS_MODELS,
     'actions': FACIAL_FEATURES,
-    'detector_backend': FACE_DETECTOR_BACKEND,
+    'detector_backend': 'skip',
+    'enforce_detection': False,
+    'prog_bar': False
+}
+
+# Face Recognition
+FACE_RECOGNITION_MODEL_NAME = 'VGG-Face'
+FACE_RECOGNITION_MODEL = DeepFace.build_model(FACE_RECOGNITION_MODEL_NAME)
+FACE_RECOGNITION_PARAMS = {
+    'db_path': "db",
+    'model_name': FACE_RECOGNITION_MODEL_NAME,
+    'model': FACE_RECOGNITION_MODEL,
+    'detector_backend': 'skip',
     'enforce_detection': False,
     'prog_bar': False
 }
@@ -37,3 +49,7 @@ def extract_facial_feature_info(features):
                 f"{feature.capitalize()}: {features['dominant_' + feature]}")
 
     return extracted_features
+
+
+def extract_face_recognition_data(match):
+    return match['identity'].split('/')[-1][:-4]
